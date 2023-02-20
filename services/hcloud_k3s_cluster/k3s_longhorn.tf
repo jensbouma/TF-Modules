@@ -61,7 +61,7 @@ resource "helm_release" "longhorn" {
     value = 2
   }
 
-  /* set {
+  set {
     name = "csi.provisionerReplicaCount"
     value = 2
   }
@@ -79,25 +79,25 @@ resource "helm_release" "longhorn" {
   set {
     name = "csi.attacherReplicaCount"
     value = 2
-  } */
+  }
 
   /* set {
-    name = "longhorn.RecoveryBackendReplicas"
+    name = "longhornRecoveryBackend.replicas"
     value = 1
   }
 
   set {
-    name = "longhorn.ConversionWebhookReplicas"
+    name = "longhornConversionWebhook.replicas"
     value = 1
   }
 
   set {
-    name = "longhorn.AdmissionWebhookReplicas"
+    name = "longhornAdmissionWebhook.replicas"
     value = 1
   } */
 
   set {
-    name = "longhornUI.Replicas"
+    name = "longhornUI.replicas"
     value = 1
   }
   
