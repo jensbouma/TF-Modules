@@ -4,23 +4,20 @@ output "private_key" {
 }
 
 output "kubeconfig" {
-  depends_on = [
-    data.remote_file.kubeconfig
-  ]
   value = {
-    host                   = yamldecode(data.remote_file.kubeconfig.content).clusters[0].cluster.server
-    cluster_ca_certificate = base64decode(yamldecode(data.remote_file.kubeconfig.content).clusters[0].cluster.certificate-authority-data)
-    client_certificate     = base64decode(yamldecode(data.remote_file.kubeconfig.content).users[0].user.client-certificate-data)
-    client_key             = base64decode(yamldecode(data.remote_file.kubeconfig.content).users[0].user.client-key-data)
+    host                   = "https://${hcloud_server.node[values({ for key, val in var.nodes : key => key if val.k3s_type == "master" })[0]].ipv4_address}:6443"
+    cluster_ca_certificate = local.certificates_by_type["server-ca"]
+    client_certificate     = tls_locally_signed_cert.master_user[0].cert_pem
+    client_key             = tls_private_key.master_user[0].private_key_pem
   }
-  sensitive = true
-}
-
-output "cloud-init" {
-  value     = values(data.template_file.cloud-init)[*].rendered
   sensitive = true
 }
 
 output "cluster_hostname" {
   value = cloudflare_record.tunnel.hostname
+}
+
+output "longhorn_password" {
+  value     = random_password.longhorn.result
+  sensitive = true
 }

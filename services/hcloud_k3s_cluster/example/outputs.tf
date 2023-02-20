@@ -1,6 +1,15 @@
 
 output "kubeconfig" {
-  value = module.hcloud_k3s_cluster.kubeconfig
+  value     = module.hcloud_k3s_cluster.kubeconfig
+  sensitive = true
+}
+
+output "cluster_hostname" {
+  value = module.hcloud_k3s_cluster.cluster_hostname
+}
+
+output "longhorn_password" {
+  value     = module.hcloud_k3s_cluster.longhorn_password
   sensitive = true
 }
 
@@ -8,20 +17,3 @@ output "kubeconfig" {
   value = module.hcloud_k3s_cluster.private_key
   sensitive = true
 } */
-
-/* output "ipv4_address" {
-  value = values({
-      for node, val in local.nodes : node => {
-        ipv4_address = module.hcloud_k3s_cluster.node_map["${node}.${local.cluster}"].ipv4_address
-      } if val.k3s_type == "master"
-    })[0].ipv4_address
-} */
-
-/* output "cloud-init" {
-  value = module.hcloud_k3s_cluster.cloud-init
-  sensitive = true
-} */
-
-output "hostname" {
-  value = module.hcloud_k3s_cluster.hostname
-}

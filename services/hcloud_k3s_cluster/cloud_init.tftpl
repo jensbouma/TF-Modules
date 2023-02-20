@@ -3,20 +3,27 @@ packages:
   - curl
   - apparmor
   - apparmor-utils
+  - open-iscsi
 
 package_upgrade: true
-
+write_files:
+%{if node.k3s_type == "master" ~}
+%{ for certificate in certificates_files ~}
+  - content: |
+      ${indent(6, certificate.file_content)}
+    path: /var/lib/rancher/k3s/server/tls/${certificate.file_name}
+%{ endfor }
+%{~ endif}
 runcmd:
 %{if node.k3s_type == "master" ~}
-  - curl -sfL https://get.k3s.io | sh -s - --token ${k3s_token} --node-ip ${node.private_ip} --flannel-backend=wireguard-native server --disable traefik --cluster-init --tls-san "$(ifconfig eth0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
+  - curl -sfL https://get.k3s.io | sh -s - --token ${k3s_token} --node-ip ${node.private_ip} --flannel-backend=wireguard-native server --disable traefik --disable local-storage --cluster-init --tls-san "$(ifconfig eth0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
 %{~ if can(s3_bucket) ~} 
  --etcd-s3 --etcd-snapshot-retention 10 --etcd-snapshot-schedule-cron '0 */6 * * *' --etcd-s3-endpoint ${s3_bucket.endpoint} --etcd-s3-access-key ${s3_bucket.access_key} --etcd-s3-secret-key ${s3_bucket.secret_key} --etcd-s3-region ${s3_bucket.region} --etcd-s3-bucket ${s3_bucket_name}
 %{~ endif}
-  - k3s kubectl config set-cluster default --server=https://$(ifconfig eth0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'):6443 --kubeconfig /etc/rancher/k3s/k3s.yaml
-  - /root/terraform.sh
+  - sleep 10 && mkdir /root/.kube && cp /etc/rancher/k3s/k3s.yaml /root/.kube/config && k3s kubectl config set-cluster default --server=https://$(ifconfig eth0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'):6443 --kubeconfig /root/.kube/config
 %{endif ~}
 %{if node.k3s_type == "server" ~}
-  - curl -sfL https://get.k3s.io | sh -s - --token ${k3s_token} --node-ip ${node.private_ip} --flannel-backend=wireguard-native server --disable traefik --server https://${master_ip}:6443  
+  - curl -sfL https://get.k3s.io | sh -s - --token ${k3s_token} --node-ip ${node.private_ip} --flannel-backend=wireguard-native server --disable traefik --disable local-storage --server https://${master_ip}:6443  
 %{endif ~}
 %{if node.k3s_type == "agent" ~}
   - curl -sfL https://get.k3s.io | K3S_URL=https://${master_ip}:6443 K3S_TOKEN=${k3s_token} sh -

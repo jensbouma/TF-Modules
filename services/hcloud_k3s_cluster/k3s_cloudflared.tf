@@ -9,9 +9,6 @@ resource "cloudflare_argo_tunnel" "tunnel" {
 }
 
 resource "cloudflare_record" "tunnel" {
-  depends_on = [
-    cloudflare_argo_tunnel.tunnel
-  ]
   zone_id = var.cloudflare_zone.id
   name    = var.cluster
   value   = "${cloudflare_argo_tunnel.tunnel.id}.cfargotunnel.com"
@@ -20,10 +17,7 @@ resource "cloudflare_record" "tunnel" {
 }
 
 resource "kubernetes_namespace" "cloudflared" {
-  depends_on = [
-    data.remote_file.kubeconfig,
-    cloudflare_argo_tunnel.tunnel
-  ]
+  depends_on = [time_sleep.k3s_installed]
   metadata {
     name        = "cloudflared"
     annotations = {}
@@ -100,7 +94,7 @@ resource "kubernetes_deployment" "cloudflared" {
               memory = "512Mi"
             }
             requests = {
-              cpu    = "250m"
+              cpu    = "125m"
               memory = "50Mi"
             }
           }
