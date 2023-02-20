@@ -86,7 +86,7 @@ resource "kubernetes_ingress_v1" "longhorn" {
   }
   spec {
     rule {
-      host = "longhorn.jensbouma.com"
+      host = "longhorn.${var.cloudflare_zone.zone}"
       http {
         path {
           path = "/"
