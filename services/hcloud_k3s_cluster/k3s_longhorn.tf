@@ -57,7 +57,7 @@ resource "helm_release" "longhorn" {
   }
 
   set {
-    name = "defaultReplicaCount"
+    name = "defaultSettings.replicaCount"
     value = 2
   }
 
@@ -81,23 +81,23 @@ resource "helm_release" "longhorn" {
     value = 2
   } */
 
-  set {
-    name = "longhornRecoveryBackendReplicas"
+  /* set {
+    name = "longhorn.RecoveryBackendReplicas"
     value = 1
   }
 
   set {
-    name = "longhornConversionWebhookReplicas"
+    name = "longhorn.ConversionWebhookReplicas"
     value = 1
   }
 
   set {
-    name = "longhornAdmissionWebhookReplicas"
+    name = "longhorn.AdmissionWebhookReplicas"
     value = 1
-  }
+  } */
 
   set {
-    name = "longhornUIReplicas"
+    name = "longhornUI.Replicas"
     value = 1
   }
   
