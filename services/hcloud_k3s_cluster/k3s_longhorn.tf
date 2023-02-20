@@ -62,41 +62,6 @@ resource "helm_release" "longhorn" {
   }
 
   set {
-    name = "csi.provisionerReplicaCount"
-    value = 2
-  }
-
-  set {
-    name = "csi.resizerReplicaCount"
-    value = 2
-  }
-
-  set {
-    name = "csi.snapshotterReplicaCount"
-    value = 2
-  }
-
-  set {
-    name = "csi.attacherReplicaCount"
-    value = 2
-  }
-
-  /* set {
-    name = "longhornRecoveryBackend.replicas"
-    value = 1
-  }
-
-  set {
-    name = "longhornConversionWebhook.replicas"
-    value = 1
-  }
-
-  set {
-    name = "longhornAdmissionWebhook.replicas"
-    value = 1
-  } */
-
-  set {
     name = "longhornUI.replicas"
     value = 1
   }
