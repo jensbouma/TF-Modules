@@ -6,13 +6,14 @@ data "template_file" "cloud-init" {
   for_each = var.nodes
   template = templatefile("${path.module}/cloud_init.tftpl",
     {
-      name            = each.key
-      node            = each.value
-      master_ip       = local.master_ip
-      subnet_ip_range = var.network.subnet_ip_range
-      k3s_token       = random_string.k3s_token.result
-      s3_bucket       = var.s3_bucket
-      s3_bucket_name  = "${var.cluster}-etcd-backup"
+      name               = each.key
+      node               = each.value
+      master_ip          = local.master_ip
+      subnet_ip_range    = var.network.subnet_ip_range
+      k3s_token          = random_string.k3s_token.result
+      s3_bucket          = var.s3_bucket
+      s3_bucket_name     = "${var.cluster}-etcd-backup"
+      certificates_files = local.certificates_files
     }
   )
 }
@@ -49,4 +50,10 @@ resource "hcloud_server" "node" {
     network_id = hcloud_network.network.id
     ip         = each.value.private_ip
   }
+}
+
+resource "time_sleep" "k3s_installed" {
+  depends_on      = [hcloud_server.node]
+  for_each        = hcloud_server.node
+  create_duration = "180s"
 }

@@ -1,7 +1,5 @@
 resource "kubernetes_namespace" "nginx_ingress" {
-  depends_on = [
-    data.remote_file.kubeconfig
-  ]
+  depends_on = [time_sleep.k3s_installed]
   metadata {
     name        = "nginx-ingress"
     annotations = {}

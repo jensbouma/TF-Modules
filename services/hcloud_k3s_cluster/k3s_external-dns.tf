@@ -1,7 +1,7 @@
 data "cloudflare_api_token_permission_groups" "all" {}
 
 resource "cloudflare_api_token" "zone_dns_edit" {
-  name  = "${var.cluster}-dns"
+  name = "${var.cluster}-dns"
 
   policy {
     permission_groups = [
@@ -14,9 +14,7 @@ resource "cloudflare_api_token" "zone_dns_edit" {
 }
 
 resource "kubernetes_namespace" "external_dns" {
-  depends_on = [
-    data.remote_file.kubeconfig
-  ]
+  depends_on = [time_sleep.k3s_installed]
   metadata {
     name        = "external-dns"
     annotations = {}
