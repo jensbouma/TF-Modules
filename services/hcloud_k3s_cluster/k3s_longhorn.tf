@@ -48,13 +48,59 @@ resource "helm_release" "longhorn" {
 
   set {
     name  = "storageclass.kubernetes\\.io/is-default-class"
-    value = "true"
+    value = true
   }
 
   set {
     name  = "storageMinimalAvailablePercentage"
-    value = "10"
+    value = 10
   }
+
+  set {
+    name = "defaultReplicaCount"
+    value = 2
+  }
+
+  /* set {
+    name = "csi.provisionerReplicaCount"
+    value = 2
+  }
+
+  set {
+    name = "csi.resizerReplicaCount"
+    value = 2
+  }
+
+  set {
+    name = "csi.snapshotterReplicaCount"
+    value = 2
+  }
+
+  set {
+    name = "csi.attacherReplicaCount"
+    value = 2
+  } */
+
+  set {
+    name = "longhornRecoveryBackendReplicas"
+    value = 1
+  }
+
+  set {
+    name = "longhornConversionWebhookReplicas"
+    value = 1
+  }
+
+  set {
+    name = "longhornAdmissionWebhookReplicas"
+    value = 1
+  }
+
+  set {
+    name = "longhornUIReplicas"
+    value = 1
+  }
+  
 }
 
 resource "kubernetes_secret" "longhorn" {
