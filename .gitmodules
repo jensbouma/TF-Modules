@@ -1,0 +1,4 @@
+[submodule "create_kubeconfig/terraform-kubernetes-kubeconfig"]
+	path = create_kubeconfig/terraform-kubernetes-kubeconfig
+	url = https://github.com/mvachhar/terraform-kubernetes-kubeconfig.git
+	branch = no-experiment
