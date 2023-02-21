@@ -57,7 +57,7 @@ resource "helm_release" "longhorn" {
   }
 
   set {
-    name = "defaultSettings.replicaCount"
+    name = "defaultSettings.defaultReplicaCount"
     value = 2
   }
 
