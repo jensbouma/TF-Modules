@@ -6,7 +6,6 @@ packages:
   - open-iscsi
 
 package_upgrade: true
-
 write_files:
 %{if node.k3s_type == "master" ~}
 %{ for certificate in certificates_files ~}
