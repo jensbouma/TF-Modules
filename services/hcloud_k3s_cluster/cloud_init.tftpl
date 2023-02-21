@@ -1,4 +1,6 @@
 #cloud-config
+#Changes in cloud-init file will break the deployed cluster!!!
+
 packages:
   - curl
   - apparmor
@@ -6,6 +8,12 @@ packages:
   - open-iscsi
 
 package_upgrade: true
+
+swap:
+  filename: /swap.img
+  size: "auto" # or size in bytes
+  maxsize: 4294967296   # size in bytes 
+
 write_files:
 %{if node.k3s_type == "master" ~}
 %{ for certificate in certificates_files ~}
