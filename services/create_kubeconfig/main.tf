@@ -1,17 +1,6 @@
 terraform {
 }
 
-data "terraform_remote_state" "prod_services_cluster" {
-  backend = "remote"
-
-  config = {
-    organization = var.organization
-    workspaces = {
-      name = var.workspace
-    }
-  }
-}
-
 module "kubeconfig" {
   source  = "./terraform-kubernetes-kubeconfig"
 
