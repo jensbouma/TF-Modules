@@ -120,8 +120,3 @@ resource "random_string" "k3s_token" {
   length  = 64
   special = false
 }
-
-resource "random_password" "longhorn" {
-  length  = 16
-  special = true
-}
