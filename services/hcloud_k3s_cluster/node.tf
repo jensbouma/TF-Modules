@@ -51,9 +51,3 @@ resource "hcloud_server" "node" {
     ip         = each.value.private_ip
   }
 }
-
-resource "time_sleep" "k3s_installed" {
-  depends_on      = [hcloud_server.node]
-  for_each        = hcloud_server.node
-  create_duration = "180s"
-}
