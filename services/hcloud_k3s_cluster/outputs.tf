@@ -13,11 +13,11 @@ output "kubeconfig" {
   sensitive = true
 }
 
-output "cluster_hostname" {
+/* output "cluster_hostname" {
   value = cloudflare_record.tunnel.hostname
 }
 
 output "longhorn_password" {
   value     = random_password.longhorn.result
   sensitive = true
-}
+} */
