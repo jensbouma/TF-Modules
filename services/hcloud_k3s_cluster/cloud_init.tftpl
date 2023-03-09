@@ -31,7 +31,7 @@ runcmd:
   - sleep 10 && mkdir /root/.kube && cp /etc/rancher/k3s/k3s.yaml /root/.kube/config && k3s kubectl config set-cluster default --server=https://$(ifconfig eth0 | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'):6443 --kubeconfig /root/.kube/config
   - curl -L --output cloudflared.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb 
   - dpkg -i cloudflared.deb
-  - cloudflared service install ${cloudflared_key}
+  - cloudflared service install ${cloudflared_token}
 %{endif ~}
 %{if node.k3s_type == "server" ~}
   - curl -sfL https://get.k3s.io | sh -s - --token ${k3s_token} --node-ip ${node.private_ip} --flannel-backend=wireguard-native server --disable traefik --disable local-storage --server https://${master_ip}:6443  
