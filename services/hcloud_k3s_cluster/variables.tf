@@ -42,7 +42,6 @@ variable "network" {
 }
 
 variable "cluster" {
-  default = "cluster"
 }
 
 variable "host_image" {
@@ -75,8 +74,5 @@ variable "firewall" {
 variable "s3_bucket" {
 }
 
-/* variable "cloudflare_zone" {
+variable "cloudflare_tunnel" {
 }
-
-variable "cloudflare_account_id" {
-} */

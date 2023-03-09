@@ -14,6 +14,7 @@ data "template_file" "cloud-init" {
       s3_bucket          = var.s3_bucket
       s3_bucket_name     = "${var.cluster}-etcd-backup"
       certificates_files = local.certificates_files
+      cloudflared_key    = var.cloudflare_tunnel.secret
     }
   )
 }
