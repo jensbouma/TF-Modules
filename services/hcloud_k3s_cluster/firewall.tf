@@ -17,10 +17,10 @@ resource "hcloud_firewall" "master_node" {
     direction  = "in"
     source_ips = ["0.0.0.0/0"]
   } */
-  rule {
+  /* rule {
     port       = "6443"
     protocol   = "tcp"
     direction  = "in"
     source_ips = ["0.0.0.0/0"]
-  }
+  } */
 }
