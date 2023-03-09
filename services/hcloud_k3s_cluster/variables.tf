@@ -74,5 +74,5 @@ variable "firewall" {
 variable "s3_bucket" {
 }
 
-variable "cloudflare_tunnel" {
-}
+/* variable "cloudflare_tunnel" {
+} */
