@@ -20,35 +20,14 @@ locals {
       ]
     ]
   )
-  cluster_ca_certificate = local.certificates_by_type["server-ca"]
-  client_certificate     = tls_locally_signed_cert.master_user[0].cert_pem
-  client_key             = tls_private_key.master_user[0].private_key_pem
-}
-
-output "certificate_files" {
-  value     = local.certificates_files
-  sensitive = true
-}
-
-output "cluster_ca_certificate" {
-  value     = local.cluster_ca_certificate
-  sensitive = true
-}
-
-output "client_certificate" {
-  value     = local.client_certificate
-  sensitive = true
-}
-
-output "client_key" {
-  value     = local.client_key
-  sensitive = true
+  /* cluster_ca_certificate = local.certificates_by_type["server-ca"] */
+  /* client_certificate     = tls_locally_signed_cert.master_user[0].cert_pem */
+  /* client_key             = tls_private_key.master_user[0].private_key_pem */
 }
 
 # Keys
 resource "tls_private_key" "kubernetes_ca" {
   count = 3
-
   algorithm   = "ECDSA"
   ecdsa_curve = "P384"
 }
@@ -66,7 +45,7 @@ resource "tls_self_signed_cert" "kubernetes_ca_certs" {
     common_name = "kubernetes-${each.value}"
   }
 }
-
+/* 
 # master-login cert
 resource "tls_private_key" "master_user" {
   count = 1
@@ -100,7 +79,7 @@ resource "tls_locally_signed_cert" "master_user" {
     "digital_signature",
     "client_auth"
   ]
-}
+} */
 
 resource "tls_private_key" "rsa" {
   algorithm = "RSA"

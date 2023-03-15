@@ -22,3 +22,24 @@ output "longhorn_password" {
   value     = random_password.longhorn.result
   sensitive = true
 } */
+
+
+/* output "certificate_files" {
+  value     = local.certificates_files
+  sensitive = true
+}
+
+output "cluster_ca_certificate" {
+  value     = local.cluster_ca_certificate
+  sensitive = true
+}
+
+output "client_certificate" {
+  value     = local.client_certificate
+  sensitive = true
+}
+
+output "client_key" {
+  value     = local.client_key
+  sensitive = true
+} */
