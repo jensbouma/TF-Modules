@@ -9,7 +9,7 @@ output "kubeconfig" {
     /* host                   = "https://${local.master_ip}:6443"    */
     cluster_ca_certificate = local.certificates_by_type["server-ca"]
     client_certificate     = tls_locally_signed_cert.master_user[0].cert_pem
-    /* client_key             = tls_private_key.master_user[0].private_key_pem */
+    client_key             = tls_private_key.master_user[0].private_key_pem
   }
   sensitive = true
 }
