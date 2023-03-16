@@ -14,8 +14,7 @@ locals {
           },
           {
             "file_name"    = "${s}.crt"
-            /* "file_content" = tls_self_signed_cert.kubernetes_ca_certs[index(local.certificates_names, s)].cert_pem */
-            "file_content" = cloudflare_origin_ca_certificate.kubernetes_ca_certs[index(local.certificates_names, s)].certificate
+            "file_content" = tls_self_signed_cert.kubernetes_ca_certs[index(local.certificates_names, s)].cert_pem
           }
         ])
       ]
@@ -42,25 +41,6 @@ resource "tls_self_signed_cert" "kubernetes_ca_certs" {
   subject {
     common_name = "kubernetes-${each.value}"
   }
-}
-
-resource "tls_cert_request" "kubernetes_ca" {
-  for_each =        local.certificates_types
-  key_algorithm   = tls_private_key.kubernetes_ca.algorithm
-  private_key_pem = tls_private_key.kubernetes_ca.private_key_pem
-
-  subject {
-    common_name  = ""
-    organization = "kube-01"
-  }
-}
-
-resource "cloudflare_origin_ca_certificate" "kubernetes_ca" {
-  for_each           = tls_cert_request.kubernetes_ca
-  csr                = each.value.cert_request_pem
-  hostnames          = ["clusterfuck.cloud"]
-  request_type       = "origin-rsa"
-  requested_validity = 5475 # 15 years
 }
 
 # master-login key
