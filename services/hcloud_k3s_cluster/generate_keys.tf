@@ -20,9 +20,6 @@ locals {
       ]
     ]
   )
-  /* cluster_ca_certificate = local.certificates_by_type["server-ca"] */
-  /* client_certificate     = tls_locally_signed_cert.master_user[0].cert_pem */
-  /* client_key             = tls_private_key.master_user[0].private_key_pem */
 }
 
 # Keys
@@ -45,8 +42,8 @@ resource "tls_self_signed_cert" "kubernetes_ca_certs" {
     common_name = "kubernetes-${each.value}"
   }
 }
-/* 
-# master-login cert
+
+# master-login key
 resource "tls_private_key" "master_user" {
   count = 1
 
@@ -63,13 +60,12 @@ resource "tls_cert_request" "master_user" {
     common_name  = "master-user"
     organization = "system:masters"
   }
-} */
+}
 
 resource "tls_locally_signed_cert" "master_user" {
   count = 1
 
   cert_request_pem   = tls_cert_request.master_user[0].cert_request_pem
-  /* ca_private_key_pem = tls_private_key.kubernetes_ca[0].private_key_pem */
   ca_private_key_pem = tls_private_key.kubernetes_ca[0].private_key_pem
   ca_cert_pem        = tls_self_signed_cert.kubernetes_ca_certs[0].cert_pem
 
