@@ -63,12 +63,13 @@ resource "tls_cert_request" "master_user" {
     common_name  = "master-user"
     organization = "system:masters"
   }
-}
+} */
 
 resource "tls_locally_signed_cert" "master_user" {
   count = 1
 
   cert_request_pem   = tls_cert_request.master_user[0].cert_request_pem
+  /* ca_private_key_pem = tls_private_key.kubernetes_ca[0].private_key_pem */
   ca_private_key_pem = tls_private_key.kubernetes_ca[0].private_key_pem
   ca_cert_pem        = tls_self_signed_cert.kubernetes_ca_certs[0].cert_pem
 
@@ -79,8 +80,9 @@ resource "tls_locally_signed_cert" "master_user" {
     "digital_signature",
     "client_auth"
   ]
-} */
+}
 
+# Cluster SSH Key
 resource "tls_private_key" "rsa" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -95,6 +97,7 @@ resource "hcloud_ssh_key" "default" {
   public_key = data.tls_public_key.rsa.public_key_openssh
 }
 
+# Cluster join token
 resource "random_string" "k3s_token" {
   length  = 64
   special = false
