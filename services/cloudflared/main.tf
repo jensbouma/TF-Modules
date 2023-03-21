@@ -149,7 +149,7 @@ no-autoupdate: true
 
 ingress:
 # This rule sends all requests to nginx ingress controller, which proxies them further to correct services
-- service: http://${helm_release.nginx_ingress.name}.${kubernetes_namespace.nginx_ingress.metadata[0].name}.svc.cluster.local.:80
+- service: http://${var.nginx_ingress.name}.${var.nginx_ingress.namespace}.svc.cluster.local.:80
 EOT
   }
 }
