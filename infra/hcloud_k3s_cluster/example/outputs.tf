@@ -13,7 +13,7 @@ output "longhorn_password" {
   sensitive = true
 }
 
-/* output "private_key" {
+output "private_key" {
   value = module.hcloud_k3s_cluster.private_key
   sensitive = true
-} */
+}
