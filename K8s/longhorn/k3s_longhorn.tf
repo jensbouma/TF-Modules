@@ -14,14 +14,14 @@ resource "kubernetes_namespace" "longhorn" {
 
 resource "kubernetes_secret" "aws_secret" {
   metadata {
-    name      = "cloudflare-r2-secret"
+    name      = "aws-secret"
     namespace = kubernetes_namespace.longhorn.id
   }
 
   data = {
-    AWS_ACCESS_KEY_ID     = data.terraform_remote_state.global_storage.outputs.cloudflare_r2.access_key
-    AWS_SECRET_ACCESS_KEY = data.terraform_remote_state.global_storage.outputs.cloudflare_r2.secret_key
-    AWS_ENDPOINTS         = data.terraform_remote_state.global_storage.outputs.cloudflare_r2.https_endpoint
+    AWS_ACCESS_KEY_ID     = var.s3_bucket.access_key
+    AWS_SECRET_ACCESS_KEY = var.s3_bucket.secret_key
+    AWS_ENDPOINTS         = var.s3_bucket.https_endpoint
   }
 }
 
@@ -37,7 +37,7 @@ resource "helm_release" "longhorn" {
   }
   set {
     name  = "defaultSettings.backupTargetCredentialSecret"
-    value = "cloudflare-r2-secret"
+    value = "aws-secret"
   }
 
   set {
@@ -71,11 +71,10 @@ resource "kubernetes_secret" "longhorn" {
   data = {
     "admin" = random_password.longhorn.bcrypt_hash
   }
-
-  /* type = "kubernetes.io/basic-auth" */
 }
 
-resource "kubernetes_ingress_v1" "longhorn" {
+
+/* resource "kubernetes_ingress_v1" "longhorn" {
   metadata {
     name      = "longhorn-dashboard"
     namespace = kubernetes_namespace.longhorn.metadata[0].name
@@ -107,4 +106,4 @@ resource "kubernetes_ingress_v1" "longhorn" {
       }
     }
   }
-}
+} */
