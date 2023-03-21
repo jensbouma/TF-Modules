@@ -3,9 +3,3 @@ locals {
   cluster = var.cluster
   zones = var.zones
 }
-
-variable "cluster" {}
-
-variable "zones" {}
-
-variable "cloudflare_account_id" {}
