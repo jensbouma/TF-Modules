@@ -55,7 +55,7 @@ resource "helm_release" "external_dns" {
 
   set {
     name  = "txtOwnerId"
-    value = cloudflare_argo_tunnel.tunnel.name
+    value = var.tunnel.name
   }
 
   set {
