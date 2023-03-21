@@ -5,6 +5,6 @@ terraform {
       version = "~> 3.0"
     }
     kubernetes = {}
-    helm_release = {}
+    helm = {}
   }
 }
