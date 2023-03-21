@@ -3,6 +3,6 @@ resource "aws_s3_bucket" "bucket" {
   bucket   = var.s3_bucket_name
 }
 
-output "data_object" {
+output "bucket" {
   value = aws_s3_bucket.bucket
 }
