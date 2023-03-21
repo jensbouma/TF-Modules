@@ -4,12 +4,12 @@ resource "random_id" "argo_secret" {
 
 resource "cloudflare_argo_tunnel" "tunnel" {
   account_id = var.cloudflare_account_id
-  name       = local.cluster
+  name       = var.cluster
   secret     = random_id.argo_secret.b64_std
 }
 
 resource "cloudflare_record" "tunnel" {
-  zone_id = local.zones.clusterfuck_cloud.id
+  zone_id = var.zones.clusterfuck_cloud.id
   name    = "kube01"
   value   = "${cloudflare_argo_tunnel.tunnel.id}.cfargotunnel.com"
   type    = "CNAME"

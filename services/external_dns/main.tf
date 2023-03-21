@@ -1,15 +1,15 @@
 data "cloudflare_api_token_permission_groups" "all" {}
 
 resource "cloudflare_api_token" "zone_dns_edit" {
-  name = "${local.cluster}-dns"
+  name = "${var.cluster}-dns"
 
   policy {
     permission_groups = [
       data.cloudflare_api_token_permission_groups.all.zone["DNS Write"],
     ]
     resources = {
-      "com.cloudflare.api.account.zone.${local.zones.clusterfuck_cloud.id}" = "*"
-      "com.cloudflare.api.account.zone.${local.zones.groundschool_nl.id}" = "*"
+      "com.cloudflare.api.account.zone.${var.zones.clusterfuck_cloud.id}" = "*"
+      "com.cloudflare.api.account.zone.${var.zones.groundschool_nl.id}" = "*"
     }
   }
 }
