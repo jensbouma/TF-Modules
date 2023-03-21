@@ -1,8 +1,3 @@
-resource "random_password" "longhorn" {
-  length  = 16
-  special = true
-}
-
 resource "kubernetes_namespace" "longhorn" {
   metadata {
     annotations = {
@@ -61,52 +56,6 @@ resource "helm_release" "longhorn" {
   }
   
 }
-
-resource "kubernetes_secret" "longhorn" {
-  metadata {
-    name      = "longhorn-auth"
-    namespace = kubernetes_namespace.longhorn.metadata[0].name
-  }
-
-  data = {
-    "admin" = random_password.longhorn.bcrypt_hash
-  }
-}
-
-/* resource "kubernetes_ingress_v1" "longhorn" {
-  metadata {
-    name      = "longhorn-dashboard"
-    namespace = kubernetes_namespace.longhorn.metadata[0].name
-    annotations = {
-      "kubernetes.io/ingress.class" : "nginx"
-      "external-dns.alpha.kubernetes.io/target"      = cloudflare_record.tunnel.hostname
-      "nginx.ingress.kubernetes.io/auth-type"        = "basic"
-      "nginx.ingress.kubernetes.io/auth-secret-type" = "auth-map"
-      "nginx.ingress.kubernetes.io/auth-secret"      = "${kubernetes_namespace.longhorn.metadata[0].name}/${kubernetes_secret.longhorn.metadata[0].name}"
-      "nginx.ingress.kubernetes.io/auth-realm"       = "Authentication Required"
-
-    }
-  }
-  spec {
-    rule {
-      host = "longhorn.${local.zones.clusterfuck_cloud.zone}"
-      http {
-        path {
-          path = "/"
-          backend {
-            service {
-              name = "longhorn-frontend"
-              port {
-                number = 80
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-} */
-
 
 resource "kubernetes_manifest" "daily-5am-7days" {
   depends_on = [
