@@ -73,7 +73,6 @@ resource "kubernetes_secret" "longhorn" {
   }
 }
 
-
 /* resource "kubernetes_ingress_v1" "longhorn" {
   metadata {
     name      = "longhorn-dashboard"
