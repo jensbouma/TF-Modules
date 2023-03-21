@@ -12,7 +12,7 @@ data "template_file" "cloud-init" {
       subnet_ip_range    = var.network.subnet_ip_range
       k3s_token          = random_string.k3s_token.result
       s3_bucket          = var.s3_bucket
-      s3_bucket_name     = "${var.cluster}-etcd-backup"
+      /* s3_bucket_name     = "${var.cluster}-etcd-backup" */
       certificates_files = local.certificates_files
     }
   )
