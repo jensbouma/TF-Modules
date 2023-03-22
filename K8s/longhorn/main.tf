@@ -56,24 +56,3 @@ resource "helm_release" "longhorn" {
   }
   
 }
-
-resource "kubernetes_manifest" "daily-5am-7days" {
-  depends_on = [
-    helm_release.longhorn
-  ]
-    manifest = {
-        apiVersion = "longhorn.io/v1beta1"
-        kind = "RecurringJob"
-        metadata = {
-        name = "daily-5am-7days"
-        namespace = "longhorn"
-        }
-        spec = {
-            cron = "0 5 ? * *"
-            task = "backup"
-            groups = ["default"]
-            retain = 7
-            concurrency = 1
-        }
-    }
-}
