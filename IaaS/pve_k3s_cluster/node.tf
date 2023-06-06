@@ -53,64 +53,64 @@ data "template_file" "cloud-init" {
 # }
 
 
-resource "proxmox_vm_qemu" "cloudinit-test" {
+# resource "proxmox_vm_qemu" "cloudinit-test" {
     
-    name        = "ubuntu-01"
-    desc        = "First Ubuntu Server from Terraform"
+#     name        = "ubuntu-01"
+#     desc        = "First Ubuntu Server from Terraform"
 
-    # Node name has to be the same name as within the cluster
-    # this might not include the FQDN
-    target_node = "pve"
+#     # Node name has to be the same name as within the cluster
+#     # this might not include the FQDN
+#     target_node = "pve"
 
-    # The destination resource pool for the new VM
-    pool = "Pool-01"
+#     # The destination resource pool for the new VM
+#     pool = "Pool-01"
 
-    # The template name to clone this vm from
-    clone = "ci-ubuntu-template"
+#     # The template name to clone this vm from
+#     clone = "ci-ubuntu-template"
 
-    #  # Activate QEMU agent for this VM
-    # agent = 1
-    cores   = 2
-    sockets = 1
-    memory  = 2048
+#     #  # Activate QEMU agent for this VM
+#     # agent = 1
+#     cores   = 2
+#     sockets = 1
+#     memory  = 2048
     
-#     ssh_user        = "root"
-#     ssh_private_key = <<EOF
-# -----BEGIN RSA PRIVATE KEY-----
-# private ssh key root
-# -----END RSA PRIVATE KEY-----
-# EOF
+# #     ssh_user        = "root"
+# #     ssh_private_key = <<EOF
+# # -----BEGIN RSA PRIVATE KEY-----
+# # private ssh key root
+# # -----END RSA PRIVATE KEY-----
+# # EOF
 
-    os_type = "cloud-init"
+#     os_type = "cloud-init"
   
-    # # Setup the disk
-    disk {
-        size = "10G"
-        type = "scsi"
-        storage = "local-lvm"
-        iothread = 1
-        ssd = 1
-    #     # discard = "on"
-    }
+#     # # Setup the disk
+#     disk {
+#         size = "10G"
+#         type = "scsi"
+#         storage = "local-lvm"
+#         iothread = 1
+#         ssd = 1
+#     #     # discard = "on"
+#     }
 
-    # Setup the network interface and assign a vlan tag: 0
-    network {
-        model = "virtio"
-        bridge = "vmbr0"
-        tag = 0
-    }
+#     # Setup the network interface and assign a vlan tag: 0
+#     network {
+#         model = "virtio"
+#         bridge = "vmbr0"
+#         tag = 0
+#     }
 
-    # Setup the ip address using cloud-init.
-    # Keep in mind to use the CIDR notation for the ip.
-    ipconfig0 = "ip=192.168.10.21/24,gw=192.168.10.253"
+#     # Setup the ip address using cloud-init.
+#     # Keep in mind to use the CIDR notation for the ip.
+#     ipconfig0 = "ip=192.168.10.21/24,gw=192.168.10.253"
 
-    sshkeys = <<EOF
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1fCKcLNiH1C5HKa0uPbYRTI+0jvZBdVtbka3DTrjxZRErdiug1/up77/ozZt7XXjWSO2bBouTJPkVhxAcwp78s1U+8cHaiZz4YN68hVBhRoJnGR7yFuWLVwGarrRVnfQeWctXODRfruUaEKNmWY4yrajUaitDbsKPnnCxLH3ZzkEKxOR2GjP7/o/qB935ph1SROiNXkUDUI/81tn4gq569rgp7N1NnzNROnmQY30oWdgi/idKVAIqYWqcFVYRmWxjp3xXdGGxjgTSU3It3kAf4xLNgV9vecV+GX6VDzgSBAvcuer/LX8ZSoZ4wQaiE4lWPh48cR2Xu8a9R6pwT7dKIHqCjkjQOhaGxgaqaSzMyv2HwSbqCzxkNt+GwQ6IaQ1gsND9Jc5voBWkLBp30D09Ya2dytILsN9iG2THdyRMLcGmu6WT179D7oaUqhK+svx6FkgK3gszLnjKUYQe3lalSZpqyVw7lx7NgCehoqxyF8wZvD0dI3pS3cTLbFGfcmE= jensbouma@MacBook-Pro.local
-    EOF
+#     sshkeys = <<EOF
+#     ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1fCKcLNiH1C5HKa0uPbYRTI+0jvZBdVtbka3DTrjxZRErdiug1/up77/ozZt7XXjWSO2bBouTJPkVhxAcwp78s1U+8cHaiZz4YN68hVBhRoJnGR7yFuWLVwGarrRVnfQeWctXODRfruUaEKNmWY4yrajUaitDbsKPnnCxLH3ZzkEKxOR2GjP7/o/qB935ph1SROiNXkUDUI/81tn4gq569rgp7N1NnzNROnmQY30oWdgi/idKVAIqYWqcFVYRmWxjp3xXdGGxjgTSU3It3kAf4xLNgV9vecV+GX6VDzgSBAvcuer/LX8ZSoZ4wQaiE4lWPh48cR2Xu8a9R6pwT7dKIHqCjkjQOhaGxgaqaSzMyv2HwSbqCzxkNt+GwQ6IaQ1gsND9Jc5voBWkLBp30D09Ya2dytILsN9iG2THdyRMLcGmu6WT179D7oaUqhK+svx6FkgK3gszLnjKUYQe3lalSZpqyVw7lx7NgCehoqxyF8wZvD0dI3pS3cTLbFGfcmE= jensbouma@MacBook-Pro.local
+#     EOF
  
-    # provisioner "remote-exec" {
-    #     inline = [
-    #         "ip a"
-    #     ]
-    # }
-}
+#     # provisioner "remote-exec" {
+#     #     inline = [
+#     #         "ip a"
+#     #     ]
+#     # }
+# }
