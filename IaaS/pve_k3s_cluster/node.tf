@@ -97,7 +97,7 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     
     # cipassword = random_password.root_password.result
 
-    ciuser = each.value.user
+    ciuser = "root"
 
     # cicustom = data.template_file.cloud-init[each.key].rendered
 
