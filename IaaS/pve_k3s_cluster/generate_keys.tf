@@ -88,11 +88,6 @@ data "tls_public_key" "rsa" {
   private_key_pem = tls_private_key.rsa.private_key_pem
 }
 
-resource "hcloud_ssh_key" "default" {
-  name       = var.cluster
-  public_key = data.tls_public_key.rsa.public_key_openssh
-}
-
 # Cluster join token
 resource "random_string" "k3s_token" {
   length  = 64
