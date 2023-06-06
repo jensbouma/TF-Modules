@@ -64,7 +64,7 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     clone = "ci-ubuntu-template"
 
     agent = 1
-    cores   = 2
+    cores   = 1
     sockets = 1
     memory  = 4048
     
@@ -74,7 +74,7 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
   
     # # Setup the disk
     disk {
-        size = "30G"
+        size = "10G"
         type = "scsi"
         storage = "local-lvm"
         iothread = 1
@@ -85,6 +85,7 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     network {
         model = "virtio"
         bridge = "vmbr0"
+        tag = -1
     }
 
     # Setup the ip address using cloud-init.
@@ -92,15 +93,18 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     # "vendor=local:snippets/vendor.yaml"
     # cicustom = data.template_file.cloud-init[each.key].rendered
     ipconfig0 = "ip=${each.value.private_ip}/24,gw=192.168.10.254"
-    sshkeys = data.tls_public_key.rsa.public_key_openssh
+    sshkeys = data.tls_public_key.rsa.public_key_openssh 
+    cipassword = "12345678"
+    ciuser = "root"
+
     # ciuser = "root"
     
     # cipassword = random_password.root_password.result
 
 
-    provisioner "remote-exec" {
-        inline = [
-            "ip a"
-        ]
-    }
+    # provisioner "remote-exec" {
+    #     inline = [
+    #         "ip a"
+    #     ]
+    # }
 }
