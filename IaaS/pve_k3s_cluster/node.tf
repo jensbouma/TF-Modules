@@ -68,8 +68,8 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     sockets = 1
     memory  = 4048
     
-    # ssh_user        = "root"
-    # ssh_private_key = data.tls_public_key.rsa.public_key_openssh
+    ssh_user        = "root"
+    ssh_private_key = data.tls_public_key.rsa.public_key_openssh
     os_type         = "cloud-init"
   
     # # Setup the disk
@@ -93,8 +93,8 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     # "vendor=local:snippets/vendor.yaml"
     # cicustom = data.template_file.cloud-init[each.key].rendered
     ipconfig0 = "ip=${each.value.private_ip}/24,gw=192.168.10.254"
-    sshkeys = data.tls_public_key.rsa.public_key_openssh
-    ciuser = "root"
+    # sshkeys = data.tls_public_key.rsa.public_key_openssh
+    # ciuser = "root"
     
     # cipassword = random_password.root_password.result
 
