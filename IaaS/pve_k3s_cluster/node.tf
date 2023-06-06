@@ -53,6 +53,37 @@ data "template_file" "cloud-init" {
 # }
 
 
+
+resource "proxmox_cloud_init_disk" "ci" {
+  for_each = var.nodes
+  name      = local.vm_name
+  pve_node  = local.pve_node
+  storage   = local.iso_storage_pool
+
+  meta_data = yamlencode({
+    instance_id    = sha1(local.vm_name)
+    local-hostname = local.vm_name
+  })
+
+  user_data = data.template_file.cloud-init[each.key].rendered
+
+  network_config = yamlencode({
+    version = 1
+    config = [{
+      type = "physical"
+      name = "eth0"
+      subnets = [{
+        type            = "static"
+        address         = "${each.value.private_ip}/24"
+        gateway         = "192.168.10.254"
+        dns_nameservers = ["1.1.1.1", "8.8.8.8"]
+      }]
+    }]
+  })
+}
+
+
+
 resource "proxmox_vm_qemu" "cloudinit-test" {
     for_each    = var.nodes
     name        = each.key
@@ -72,7 +103,13 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     # ssh_private_key = data.tls_public_key.rsa.public_key_openssh
     os_type         = "cloud-init"
   
-    # # Setup the disk
+    disk {
+      type    = "scsi"
+      media   = "cdrom"
+      storage = "local-lvm"
+      volume  = proxmox_cloud_init_disk.ci[each.key].id
+      size    = proxmox_cloud_init_disk.ci[each.key].size
+    }
     disk {
         size = "10G"
         type = "scsi"
@@ -92,10 +129,10 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     # Keep in mind to use the CIDR notation for the ip.
     # "vendor=local:snippets/vendor.yaml"
     # cicustom = data.template_file.cloud-init[each.key].rendered
-    ipconfig0 = "ip=${each.value.private_ip}/24,gw=192.168.10.254"
-    sshkeys = data.tls_public_key.rsa.public_key_openssh 
-    cipassword = "12345678"
-    ciuser = "root"
+    # ipconfig0 = "ip=${each.value.private_ip}/24,gw=192.168.10.254"
+    # sshkeys = data.tls_public_key.rsa.public_key_openssh 
+    # cipassword = "12345678"
+    # ciuser = "root"
 
     # ciuser = "root"
     
