@@ -90,7 +90,7 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
 
     # Setup the ip address using cloud-init.
     # Keep in mind to use the CIDR notation for the ip.
-    # ipconfig0 = "ip=192.168.10.21/24,gw=192.168.10.253"
+    ipconfig0 = "ip=${each.value.private_ip}/24,gw=192.168.10.253"
     cicustom = data.template_file.cloud-init[each.key].rendered
 
     # provisioner "remote-exec" {
