@@ -68,8 +68,8 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     sockets = 1
     memory  = 4048
     
-    ssh_user        = "root"
-    ssh_private_key = data.tls_public_key.rsa.public_key_openssh
+    # ssh_user        = "root"
+    # ssh_private_key = data.tls_public_key.rsa.public_key_openssh
     os_type         = "cloud-init"
   
     # # Setup the disk
