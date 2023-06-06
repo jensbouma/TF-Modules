@@ -94,7 +94,7 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
 
     sshkeys = data.tls_public_key.private_key_pem.public_key_openssh
     
-    cipassword = random_password.root_password.result
+    # cipassword = random_password.root_password.result
 
     ciuser = each.value.user
 
