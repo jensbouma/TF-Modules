@@ -70,7 +70,7 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     
     ssh_user        = "root"
     ssh_private_key = data.tls_public_key.rsa.public_key_openssh
-    os_type = "cloud-init"
+    os_type         = "cloud-init"
   
     # # Setup the disk
     disk {
@@ -91,7 +91,7 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     # Setup the ip address using cloud-init.
     # Keep in mind to use the CIDR notation for the ip.
     ipconfig0 = "ip=${each.value.private_ip}/24,gw=192.168.10.253"
-    cicustom = data.template_file.cloud-init[each.key].rendered
+    # cicustom = data.template_file.cloud-init[each.key].rendered
 
     # provisioner "remote-exec" {
     #     inline = [
