@@ -103,13 +103,13 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     # ssh_private_key = data.tls_public_key.rsa.public_key_openssh
     os_type         = "cloud-init"
   
-    disk {
-      type    = "scsi"
-      media   = "cdrom"
-      storage = "local-lvm"
-      volume  = proxmox_cloud_init_disk.ci[each.key].id
-      size    = proxmox_cloud_init_disk.ci[each.key].size
-    }
+    # disk {
+    #   type    = "scsi"
+    #   media   = "cdrom"
+    #   storage = "local-lvm"
+    #   volume  = proxmox_cloud_init_disk.ci[each.key].id
+    #   size    = proxmox_cloud_init_disk.ci[each.key].size
+    # }
     disk {
         size = "10G"
         type = "scsi"
